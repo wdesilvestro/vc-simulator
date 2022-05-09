@@ -8,7 +8,7 @@ def calculate_alpha(target_yoy_growth, target_exit_time):
     return (1/(target_cont_comp_growth * target_exit_time) + 1)
 
 def simulate_single_draw(alpha, liquidation_pct, prob_dist):
-    draw = np.random.choice(["ZERO", "LIQUIDATION", "POSITIVE RETURN"], 1, p=prob_dist)[0]
+    draw = np.random.choice(["ZERO", "LIQUIDATION", "MULTIPLE"], 1, p=prob_dist)[0]
     if draw == "ZERO":
         return 0
     elif draw == "LIQUIDATION":
