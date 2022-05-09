@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "vc-simulation"
+version = "0.1.0"
+description = ""
+authors = ["Wes De Silvestro"]
+
+[tool.poetry.dependencies]
+python = "3.9.7"
+powerlaw = "^1.5"
+numpy = "^1.22.3"
+streamlit = "^1.9.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
