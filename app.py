@@ -23,13 +23,13 @@ with st.sidebar:
     st.subheader("Probability of return multiples")
     st.caption("All sliders must sum to 100% in total.")
     # TODO: Throw an error if it doesn't sum to less than 100.
-    input_prob_dist_zero = st.slider(label="% of companies that return 0x", min_value=1, max_value=100, step=1, value=33,
+    input_prob_dist_zero = st.slider(label="% of companies that return 0x", min_value=0, max_value=100, step=1, value=33,
     help="The percentage of companies that are expected to return nothing on the \
     original investment.")
-    input_prob_dist_liquidation = st.slider(label="% of companies that <1x", min_value=1, max_value=100, step=1, value=33,
+    input_prob_dist_liquidation = st.slider(label="% of companies that <1x", min_value=0, max_value=100, step=1, value=33,
     help="The percentage of companies that are expected to be liquidated and return \
     some fraction of the original investment.")
-    input_prob_dist_multiple = st.slider(label="% of companies that ≥1x", min_value=1, max_value=100, step=1, value=33,
+    input_prob_dist_multiple = st.slider(label="% of companies that ≥1x", min_value=0, max_value=100, step=1, value=33,
     help="The percentage of companies that are expected to return greater than or \
     equal to the original investment.")
     # TODO: Reset button
@@ -46,6 +46,7 @@ with st.sidebar:
     input_target_exit_time = st.number_input(label="Target # of years until an investment exits", min_value=1, max_value=100, step=1, value=5,
     help="The targeted number of years by which the venture fund would like to exit \
     an investment.")
+    st.markdown("*Given the above parameters, `α = {:.3f}`.*".format(calculate_alpha(input_target_yoy_growth / 100.0, input_target_exit_time)))
     st.markdown("##")
 
     st.subheader("Fund parameters")
@@ -245,9 +246,9 @@ fig3.patch.set_facecolor("#000000")
 fig3.patch.set_alpha(0)
 ax3.patch.set_facecolor("#000000")
 ax3.patch.set_alpha(0)
-ax3.scatter(x=np.arange(0,len(actual_returns_list)), y=actual_returns_list,
-            color="#14BAA6", s=50)
-plt.ylim(51,np.max(actual_returns_list) + 100)
+filtered_list = list(filter(lambda x: x > 50, actual_returns_list))
+ax3.scatter(x=np.arange(0,len(filtered_list)), y=filtered_list, color="#14BAA6", s=50)
+plt.ylim(0,np.max(actual_returns_list) + 100)
 ax3.tick_params(color='white', labelcolor="white")
 for spine in ax3.spines.values():
         spine.set_edgecolor('white')
