@@ -101,3 +101,7 @@ def get_averages_for_variable_across_buckets(fund_analysis_list, var):
         result = np.average([x[var] for x in fund_analysis_list if x['bucket'] == bucket])
         results.append(result)
     return np.array(results)
+
+
+def convert_moic_to_cagr(moic, fund_lifespan):
+    return np.power(np.e, (np.log(moic))/fund_lifespan) - 1

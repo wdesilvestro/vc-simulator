@@ -55,7 +55,7 @@ with st.sidebar:
     st.caption("Note that the Simulator also assumes a clawback provision is \
     present. Meaning that the VC will take no more of the profits than their \
     performance fee indicates they are owed.")
-    input_portfolio_size= st.number_input(label="Portfolio size", min_value=1, max_value=1000, step=1, value=50,
+    input_portfolio_size= st.number_input(label="Portfolio size", min_value=1, max_value=10000, step=1, value=50,
     help="The number of companies that each venture fund will invest in.")
     input_management_fee_percent = st.number_input(label="% management fee", min_value=0.0, max_value=100.0, step=0.5, value=2.0,
     help="The percentage of committed capital charged annually as a \
@@ -70,9 +70,31 @@ with st.sidebar:
     st.markdown("##")
 
     st.subheader("Simulation parameters")
-    input_simulation_runs= st.number_input(label="# of funds to simulate", min_value=1, max_value=10000, step=1, value=2500,
+    input_simulation_runs= st.number_input(label="# of funds to simulate", min_value=1, max_value=100000, step=1, value=2500,
     help="The total number of venture funds to simulate using the selected \
     paramters.")
+
+
+# Throw error, warning, and info boxes
+prob_dist_sum = input_prob_dist_zero + input_prob_dist_liquidation + input_prob_dist_multiple
+if prob_dist_sum > 100:
+    st.error("The probability of return multiple sliders are cumulative greater \
+    than 100%. Please adjust them accordingly.")
+if (prob_dist_sum < 100) and (100 - prob_dist_sum > 1):
+    st.warning("The probability of return multiple sliders do not cumulatively \
+    add up to 100. The remaining percentage points will be proportionally \
+    distributed across each outcome.")
+
+if input_target_exit_time > input_fund_lifespan:
+    st.warning("The target exit time for an investment is greater than the \
+    fund's lifespan. Due to the way the Simulator is written, the simulation \
+    will still run, but please be aware that this scenario would be not possible \
+    in the real world (at least not without a fund extension granted by the LPs).")
+
+if input_simulation_runs > 2500:
+   st.info("Please be aware that running more than 2,500 fund simulations at a \
+   time is very resource intensive and will take a while for Streamlit to process.")
+
 
 # Content window
 st.title("Venture Fund Simulator")
@@ -123,12 +145,18 @@ have been deducted.".format(input_simulation_runs, input_portfolio_size))
 # actual_stat_col5.metric("Post-mgmt fee", "{0:.1f}x".format(np.quantile(actual_returns_list, q=0.99)))
 
 
+actual_quantile_25 = np.quantile(actual_returns_list, q=0.25)
+actual_quantile_50 = np.quantile(actual_returns_list, q=0.50)
+actual_quantile_75 = np.quantile(actual_returns_list, q=0.75)
+actual_quantile_90 = np.quantile(actual_returns_list, q=0.90)
+actual_quantile_99 = np.quantile(actual_returns_list, q=0.99)
+
 actual_stat_col1, actual_stat_col2, actual_stat_col3, actual_stat_col4, actual_stat_col5 = st.columns(5)
-actual_stat_col1.metric("25th Percentile", "{0:.1f}x".format(np.quantile(actual_returns_list, q=0.25)))
-actual_stat_col2.metric("50th Percentile", "{0:.1f}x".format(np.quantile(actual_returns_list, q=0.50)))
-actual_stat_col3.metric("75th Percentile", "{0:.1f}x".format(np.quantile(actual_returns_list, q=0.75)))
-actual_stat_col4.metric("90th Percentile", "{0:.1f}x".format(np.quantile(actual_returns_list, q=0.90)))
-actual_stat_col5.metric("99th Percentile", "{0:.1f}x".format(np.quantile(actual_returns_list, q=0.99)))
+actual_stat_col1.metric("25th Percentile", "{0:.1f}x".format(actual_quantile_25))
+actual_stat_col2.metric("50th Percentile", "{0:.1f}x".format(actual_quantile_50))
+actual_stat_col3.metric("75th Percentile", "{0:.1f}x".format(actual_quantile_75))
+actual_stat_col4.metric("90th Percentile", "{0:.1f}x".format(actual_quantile_90))
+actual_stat_col5.metric("99th Percentile", "{0:.1f}x".format(actual_quantile_99))
 
 # Configure necessary fonts
 ssp_font_regular = font_manager.FontProperties(fname='./Source_Sans_Pro/SourceSansPro-Regular.ttf')
@@ -160,7 +188,7 @@ for the simulated funds, it's helpful to understand how the funds stack up \
 against industry benchmarks for what investors expect of the VC asset class. \
 Most limited partners (LPs) that provide capital to VC funds are looking for a \
 **3x return**. Anything less than that and the risk-adjusted return would not \
-justify investing in venture capital funds.")
+justify investing in the venture capital asset class.")
 
 bm_col1, bm_col2, bm_col3, bm_col4 = st.columns(4)
 bm_col1.metric("% funds with ≥ 3x return", "{0:.1f}%".format((len([x for x in actual_returns_list if x >= 3])/len(actual_returns_list))*100))
@@ -168,6 +196,24 @@ bm_col2.metric("% funds with 2-3x return", "{0:.1f}%".format((len([x for x in ac
 bm_col3.metric("% funds with 1-2x return", "{0:.1f}%".format((len([x for x in actual_returns_list if (x < 2) and (x >= 1)])/len(actual_returns_list))*100))
 bm_col4.metric("% funds with < 1x return", "{0:.1f}%".format((len([x for x in actual_returns_list if x < 1])/len(actual_returns_list))*100))
 
+st.markdown("We can also look at the compounded annual growth rate (CAGR) to \
+understand what the year-to-year growth of the simulated funds are. The numbers \
+below reflect a fund lifespan of `{}` years. Keep in mind that the longer the \
+fund lifespan, the higher the multiple of return listed above will expected to \
+be.".format(input_fund_lifespan))
+
+cagr_quantile_25 = 100 * convert_moic_to_cagr(actual_quantile_25, input_fund_lifespan)
+cagr_quantile_50 = 100 * convert_moic_to_cagr(actual_quantile_50, input_fund_lifespan)
+cagr_quantile_75 = 100 * convert_moic_to_cagr(actual_quantile_75, input_fund_lifespan)
+cagr_quantile_90 = 100 * convert_moic_to_cagr(actual_quantile_90, input_fund_lifespan)
+cagr_quantile_99 = 100 * convert_moic_to_cagr(actual_quantile_99, input_fund_lifespan)
+
+cagr_stat_col1, cagr_stat_col2, cagr_stat_col3, cagr_stat_col4, cagr_stat_col5 = st.columns(5)
+cagr_stat_col1.metric("25th Percentile", "{0:.1f}%".format(cagr_quantile_25))
+cagr_stat_col2.metric("50th Percentile", "{0:.1f}%".format(cagr_quantile_50))
+cagr_stat_col3.metric("75th Percentile", "{0:.1f}%".format(cagr_quantile_75))
+cagr_stat_col4.metric("90th Percentile", "{0:.1f}%".format(cagr_quantile_90))
+cagr_stat_col5.metric("99th Percentile", "{0:.1f}%".format(cagr_quantile_99))
 
 st.markdown("Below are two scatterplots, one showing funding returns with \
 multiples from 0x to 50x and the second showing fund returns from 51x and \
