@@ -29,8 +29,8 @@ If you have questions about the VC Simulator, please feel free to email me: [wes
 This project is distributed under the MIT License. Please see `LICENSE.md` for more details.
 
 Additionally, thank you to the following projects/authors that provided code and write-ups which the VC Simulator is based upon:
-    - This project would not be possible without the work of Jerry Neumann, a professor at Columbia University, who wrote two blog posts ([here](https://reactionwheel.net/2015/06/power-laws-in-venture.html) and [here](https://reactionwheel.net/2017/12/power-laws-in-venture-portfolio-construction.html)) which were instrumental in constructing this model. Code from the second blog post was also directly utilized in the `library.py` within this project.
-    - The [Source Sans Pro](https://fonts.google.com/specimen/Source+Sans+Pro) font is included in this repository to help render the graphs. It is provided under the [Open Font License](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL).
+- This project would not be possible without the work of Jerry Neumann, a professor at Columbia University, who wrote two blog posts ([here](https://reactionwheel.net/2015/06/power-laws-in-venture.html) and [here](https://reactionwheel.net/2017/12/power-laws-in-venture-portfolio-construction.html)) which were instrumental in constructing this model. Code from the second blog post was also directly utilized in the `library.py` within this project.
+- The [Source Sans Pro](https://fonts.google.com/specimen/Source+Sans+Pro) font is included in this repository to help render the graphs. It is provided under the [Open Font License](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL).
 - This project also makes use of the the work of Prakhar Rathi who built a simple library for constructing multi-page Streamlit apps. The `multipage.py` file in this repository is copied directly from [here](https://github.com/prakharrathi25/data-storyteller/) under the MIT License.
 
 
