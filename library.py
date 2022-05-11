@@ -99,7 +99,10 @@ def get_averages_for_variable_across_buckets(fund_analysis_list, var):
     results = []
     for bucket in bucket_list:
         result = np.average([x[var] for x in fund_analysis_list if x['bucket'] == bucket])
-        results.append(result)
+        if np.isnan(result):
+            results.append(0.0)
+        else:
+            results.append(result)
     return np.array(results)
 
 
