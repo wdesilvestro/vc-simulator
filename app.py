@@ -10,8 +10,8 @@ st.set_page_config(
      initial_sidebar_state="expanded",
      menu_items={
          'Get help': None,
-         'Report a bug': None,
-         'About': "A simulator of venture funds to help build intuition for VC investing."
+         'Report a bug': 'https://github.com/wdesilvestro/vc-simulator/issues',
+         'About': "A venture capital simulator to help build intuition for how VC investing works."
      }
  )
 
