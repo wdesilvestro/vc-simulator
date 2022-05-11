@@ -231,46 +231,6 @@ def app():
     plt.setp(ax_upper_mult.get_xticklabels(), fontproperties=ssp_font_regular, fontsize=13)
     plt.setp(ax_upper_mult.get_yticklabels(), fontproperties=ssp_font_regular, fontsize=13)
     st.pyplot(fig_upper_mult)
-
-    st.markdown("#### B) Comparison matrix against other asset classes")
-    st.markdown("Of course, it's not enough to just match the stock market's \
-    performance. Venture capital is a very volatile asset class. Whereas an \
-    investor could almost guarantee 10% median annual returns over the course \
-    of a decade of investing in the stock market, a limited partner investing \
-    into VC can make no such guarantee.")
-    st.markdown("Thus, it can be helpful to compare venture capital to other \
-    asset classes to determine what is most worthwhile for an investor. Below \
-    is a comparison of the mean, median, and standard deviation of returns for \
-    our simulated VC funds, the S&P 500, and private equity. Do note that we \
-    could not calculate the standard deviation of our simulated VC asset class \
-    due to the fact that our model has no temporal component (i.e., we can \
-    compare simulated funds against one another but not the volatility of \
-    returns *between years*.)")
-
-    cagr_mean = 100 * convert_moic_to_cagr(np.average(actual_returns_list), input_fund_lifespan)
-    cagr_median = 100 * convert_moic_to_cagr(np.median(actual_returns_list), input_fund_lifespan)
-
-    vc_vol_col1, vc_vol_col2, vc_vol_col3, vc_vol_col4 = st.columns(4)
-    vc_vol_col1.markdown("##### Simulated VC")
-    vc_vol_col2.metric("Mean return", "{0:.1f}%".format(cagr_mean))
-    vc_vol_col3.metric("Median return", "{0:.1f}%".format(cagr_median))
-    vc_vol_col4.metric("Standard deviation", "N/A")
-
-    # Source: https://www.macrotrends.net/2526/sp-500-historical-annual-returns
-    sp_vol_col1, sp_vol_col2, sp_vol_col3, sp_vol_col4 = st.columns(4)
-    sp_vol_col1.markdown("##### S&P 500")
-    sp_vol_col2.metric("Mean return", "{0:.1f}%".format(7.73))
-    sp_vol_col3.metric("Median return", "{0:.1f}%".format(10.79))
-    sp_vol_col4.metric("Standard deviation", "{0:.1f}%".format(19.13))
-
-    # Source #1: https://www.investmentcouncil.org/wp-content/uploads/2021-q2-performance-update-public.pdf
-    # Source #2: https://www.nytimes.com/2021/12/04/business/is-private-equity-overrated.html
-    pe_vol_col1, pe_vol_col2, pe_vol_col3, pe_vol_col4 = st.columns(4)
-    pe_vol_col1.markdown("##### Private Equity")
-    pe_vol_col2.metric("Mean return", "{0:.1f}%".format(16.7))
-    pe_vol_col3.metric("Median return", "{0:.1f}%".format(15.7))
-    pe_vol_col4.metric("Standard deviation", "{0:.1f}%".format(18.8))
-
     st.markdown("###")
 
 
