@@ -258,10 +258,12 @@ def app():
     st.markdown("Next, we'll look at the composition of each performance bucket \
     in terms of the types of companies that make up each bucket. We'll \
     categorize companies in the same way we categorized funds: by return. \
-    There will be four types of companies in our analysis: failed (<1x return), \
-    breakeven (1-2x return), moderately successful (2-3x), and winner (≥3x \
-    return) companies. Below is a chart showing the composition of each \
-    bucket in terms of the relative proportions of companies within funds in that bucket.")
+    There will be five types of companies in our analysis: failed (<1x return), \
+    breakeven (1-2x return), moderately successful (2-3x), winner (3-10x \
+    return), and extreme outlier (≥10x return) companies. We use five instead of \
+    four because of the granularity it offers. Below is a chart showing the \
+    composition of each bucket in terms of the averaged relative proportions of \
+    companies that make up each the funds within that bucket.")
 
     fig_comp, ax_comp = plt.subplots(figsize=(12, 6))
     fig_comp.patch.set_facecolor("#000000")
