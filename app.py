@@ -1,6 +1,6 @@
 import streamlit as st
 from multipage import MultiPage
-from pages import simulator, alpha_calculator
+from pages import simulator
 
 # Configure Streamlit page
 st.set_page_config(
@@ -20,7 +20,6 @@ app = MultiPage()
 
 # Add all your applications (pages) here
 app.add_page("Simulator", simulator.app)
-app.add_page("Alpha Parameter Calculator", alpha_calculator.app)
 
 # The main app
 app.run()

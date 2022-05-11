@@ -27,13 +27,13 @@ def app():
         recovered in event of liquidation", min_value=1.0, max_value=100.0, step=5.0, value=80.0,
         help="In the event a portfolio company must be liquidated, this is the expected \
         percentage of the original investment that will be recovered.")
-        input_target_yoy_growth = st.number_input(label="Target % for YoY growth", min_value=0.1, max_value=300.0, step=1.0, value=25.0,
-        help="The targeted percentage of year-over-year growth that the venture funds \
+        input_average_yoy_growth = st.number_input(label="Average % for YoY growth", min_value=0.1, max_value=300.0, step=1.0, value=25.0,
+        help="The average percentage of year-over-year growth that the venture funds \
         are seeking with their investments.")
-        input_target_exit_time = st.number_input(label="Target # of years until an investment exits", min_value=1, max_value=100, step=1, value=5,
-        help="The targeted number of years by which the venture fund would like to exit \
+        input_average_exit_time = st.number_input(label="Average # of years until an investment exits", min_value=1, max_value=100, step=1, value=5,
+        help="The average number of years by which the venture fund would like to exit \
         an investment.")
-        st.markdown("*Given the above parameters, `α = {:.3f}`.*".format(calculate_alpha(input_target_yoy_growth / 100.0, input_target_exit_time)))
+        st.markdown("*Given the above parameters, `α = {:.3f}`.*".format(calculate_alpha(input_average_yoy_growth / 100.0, input_average_exit_time)))
         st.markdown("##")
 
         st.subheader("Fund parameters")
@@ -73,7 +73,7 @@ def app():
         add up to 100. The remaining percentage points will be proportionally \
         distributed across each outcome.")
 
-    if input_target_exit_time > input_fund_lifespan:
+    if input_average_exit_time > input_fund_lifespan:
         st.warning("The target exit time for an investment is greater than the \
         fund's lifespan. Due to the way the Simulator is written, the simulation \
         will still run, but please be aware that this scenario would be not possible \
@@ -92,8 +92,8 @@ def app():
                                         input_prob_dist_liquidation / 100.0,
                                         input_prob_dist_multiple / 100.0],
                                     input_liquidation_pct / 100.0,
-                                    input_target_yoy_growth / 100.0,
-                                    input_target_exit_time,
+                                    input_average_yoy_growth / 100.0,
+                                    input_average_exit_time,
                                     input_portfolio_size,
                                     input_simulation_runs)
 

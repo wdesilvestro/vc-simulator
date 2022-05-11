@@ -2,13 +2,13 @@ import numpy as np
 import pandas as pd
 import powerlaw
 
-# FUNC: Given a target YoY growth rate and exit time, calculates the
+# FUNC: Given a average YoY growth rate and exit time, calculates the
 # corresponding alpha parameter for the power law distribution
-def calculate_alpha(target_yoy_growth, target_exit_time):
+def calculate_alpha(average_yoy_growth, average_exit_time):
     # Convert annually compounded growth rate (YoY) to continuously compounded
-    target_cont_comp_growth = np.log(1 + target_yoy_growth)
+    average_cont_comp_growth = np.log(1 + average_yoy_growth)
 
-    return (1/(target_cont_comp_growth * target_exit_time) + 1)
+    return (1/(average_cont_comp_growth * average_exit_time) + 1)
 
 
 # FUNC: Simulates a single draw (i.e., one portfolio company) from the power law
@@ -32,9 +32,9 @@ def simulate_single_draw(alpha, liquidation_pct, prob_dist):
 
 # FUNC: Simulates several venture funds with a set portfolio size each using the
 # simulate_single_draw function
-def simulate_multiple_funds(prob_dist, liquidation_pct, target_yoy_growth, target_exit_time, portfolio_size, simulation_runs=2500):
+def simulate_multiple_funds(prob_dist, liquidation_pct, average_yoy_growth, average_exit_time, portfolio_size, simulation_runs=2500):
     # Calculate the appropriate alpha given the inputs
-    alpha = calculate_alpha(target_yoy_growth, target_exit_time)
+    alpha = calculate_alpha(average_yoy_growth, average_exit_time)
 
     # Simuate i=simulation_runs of funds with a n=portfolio_size portfolio size
     simulated_funds_list = [[simulate_single_draw(alpha, liquidation_pct, prob_dist) for i in range(portfolio_size)] for j in range(int(simulation_runs))]
