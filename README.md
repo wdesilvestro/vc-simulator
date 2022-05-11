@@ -10,7 +10,7 @@ I built this because I wanted to create a tool to help me build intuition for ho
 
 
 ## Getting started
-You can play around with the [VC Simulator]([streamlit-link]) directly in your browser, as it is deployed using Streamlit cloud.
+You can play around with the [VC Simulator][streamlit-link] directly in your browser, as it is deployed using Streamlit cloud.
 
 You're also welcome to fork this repository and tweak the underlying model, add graphs/indicators, etc.
 
