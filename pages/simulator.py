@@ -11,7 +11,6 @@ def app():
 
         st.subheader("Probability of return multiples")
         st.caption("All sliders must sum to 100% in total.")
-        # TODO: Throw an error if it doesn't sum to less than 100.
         input_prob_dist_zero = st.slider(label="% of companies that return 0x", min_value=0, max_value=100, step=1, value=33,
         help="The percentage of companies that are expected to return nothing on the \
         original investment.")
@@ -21,7 +20,6 @@ def app():
         input_prob_dist_multiple = st.slider(label="% of companies that ≥1x", min_value=0, max_value=100, step=1, value=33,
         help="The percentage of companies that are expected to return greater than or \
         equal to the original investment.")
-        # TODO: Reset button
         st.markdown("##")
 
         st.subheader("Investment parameters")
