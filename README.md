@@ -4,6 +4,8 @@
 
 
 ## About the project
+**Author:** Wes De Silvestro (check out my [blog](https://statespace.blog))
+
 The VC Simulator is a [Streamlit](https://streamlit.io) app that allows users to simulate venture capital funds by tweaking a variety of variables such as the alpha, portfolio size, and fund lifespan.
 
 I built this because I wanted to create a tool to help me build intuition for how VC investing works after reading *The Power Law* by Sebastian Mallaby.
