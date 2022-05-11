@@ -273,15 +273,18 @@ def app():
     pct_comp_less_1x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_comp_less_1x')
     pct_comp_1x_2x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_comp_1x_2x')
     pct_comp_2x_3x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_comp_2x_3x')
-    pct_comp_greateq_3x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_comp_greateq_3x')
+    pct_comp_3x_10x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_comp_3x_10x')
+    pct_comp_greateq_10x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_comp_greateq_10x')
 
     ax_comp.bar(labels, pct_comp_less_1x, label='Companies returning < 1x', color="#ef4444")
     ax_comp.bar(labels, pct_comp_1x_2x, label='Companies returning 1-2x',
             bottom=pct_comp_less_1x, color="#eab308")
-    ax_comp.bar(labels, pct_comp_2x_3x, label='Companies returning 2-3x',
+    ax_comp.bar(labels, pct_comp_2x_3x, label='companies returning 2-3x',
             bottom=pct_comp_less_1x+pct_comp_1x_2x, color="#3b82f6")
-    ax_comp.bar(labels, pct_comp_greateq_3x, label='Companies returning ≥3x',
+    ax_comp.bar(labels, pct_comp_3x_10x, label='companies returning 3-10x',
             bottom=pct_comp_less_1x+pct_comp_1x_2x+pct_comp_2x_3x, color="#22c55e")
+    ax_comp.bar(labels, pct_comp_greateq_10x, label='Companies returning ≥10x',
+            bottom=pct_comp_less_1x+pct_comp_1x_2x+pct_comp_2x_3x+pct_comp_3x_10x, color="#166534")
     ax_comp.tick_params(color='white', labelcolor="white")
     plt.ylim(0,105,1)
     for spine in ax_comp.spines.values():
@@ -319,15 +322,18 @@ def app():
     pct_return_less_1x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_return_less_1x')
     pct_return_1x_2x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_return_1x_2x')
     pct_return_2x_3x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_return_2x_3x')
-    pct_return_greateq_3x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_return_greateq_3x')
+    pct_return_3x_10x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_return_3x_10x')
+    pct_return_greateq_10x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_return_greateq_10x')
 
     ax_return.bar(labels, pct_return_less_1x, label='Companies returning < 1x', color="#ef4444")
     ax_return.bar(labels, pct_return_1x_2x, label='Companies returning 1-2x',
             bottom=pct_return_less_1x, color="#eab308")
     ax_return.bar(labels, pct_return_2x_3x, label='Companies returning 2-3x',
             bottom=pct_return_less_1x+pct_return_1x_2x, color="#3b82f6")
-    ax_return.bar(labels, pct_return_greateq_3x, label='Companies returning ≥3x',
+    ax_return.bar(labels, pct_return_3x_10x, label='Companies returning 3-10x',
             bottom=pct_return_less_1x+pct_return_1x_2x+pct_return_2x_3x, color="#22c55e")
+    ax_return.bar(labels, pct_return_greateq_10x, label='Companies returning ≥10x',
+            bottom=pct_return_less_1x+pct_return_1x_2x+pct_return_2x_3x+pct_return_3x_10x, color="#166534")
     ax_return.tick_params(color='white', labelcolor="white")
     plt.ylim(0,105,1)
     for spine in ax_return.spines.values():

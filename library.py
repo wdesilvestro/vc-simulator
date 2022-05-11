@@ -76,7 +76,8 @@ def analyze_fund_returns(simulation_data, raw_returns_list, portfolio_size):
        fund_analysis_list[i]["pct_comp_less_1x"] =  len([x for x in simulation_data[i] if x < 1]) / portfolio_size
        fund_analysis_list[i]["pct_comp_1x_2x"] =  len([x for x in simulation_data[i] if (x >= 1) and (x < 2)]) / portfolio_size
        fund_analysis_list[i]["pct_comp_2x_3x"] =  len([x for x in simulation_data[i] if (x >= 2) and (x < 3)]) / portfolio_size
-       fund_analysis_list[i]["pct_comp_greateq_3x"] =  len([x for x in simulation_data[i] if x >= 3]) / portfolio_size
+       fund_analysis_list[i]["pct_comp_3x_10x"] =  len([x for x in simulation_data[i] if (x >= 3) and (x < 10)]) / portfolio_size
+       fund_analysis_list[i]["pct_comp_greateq_10x"] =  len([x for x in simulation_data[i] if x >= 10]) / portfolio_size
 
    # Calculate the composition of each fund's returns
    for i in range(0, len(simulation_data)):
@@ -84,12 +85,14 @@ def analyze_fund_returns(simulation_data, raw_returns_list, portfolio_size):
           fund_analysis_list[i]["pct_return_less_1x"] = 0.0
           fund_analysis_list[i]["pct_return_1x_2x"] = 0.0
           fund_analysis_list[i]["pct_return_2x_3x"] = 0.0
-          fund_analysis_list[i]["pct_return_greateq_3x"] = 0.0
+          fund_analysis_list[i]["pct_return_3x_10x"] = 0.0
+          fund_analysis_list[i]["pct_return_greateq_10x"] = 0.0
        else:
           fund_analysis_list[i]["pct_return_less_1x"] = np.sum([x for x in simulation_data[i] if x < 1]) / np.sum(simulation_data[i])
           fund_analysis_list[i]["pct_return_1x_2x"] = np.sum([x for x in simulation_data[i] if (x >= 1) and (x < 2)]) / np.sum(simulation_data[i])
           fund_analysis_list[i]["pct_return_2x_3x"] = np.sum([x for x in simulation_data[i] if (x >= 2) and (x < 3)]) / np.sum(simulation_data[i])
-          fund_analysis_list[i]["pct_return_greateq_3x"] = np.sum([x for x in simulation_data[i] if x >= 3]) / np.sum(simulation_data[i])
+          fund_analysis_list[i]["pct_return_3x_10x"] = np.sum([x for x in simulation_data[i] if (x >= 3) and (x < 10)]) / np.sum(simulation_data[i])
+          fund_analysis_list[i]["pct_return_greateq_10x"] = np.sum([x for x in simulation_data[i] if x >= 10]) / np.sum(simulation_data[i])
 
    return fund_analysis_list
 
