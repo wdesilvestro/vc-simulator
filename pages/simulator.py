@@ -5,7 +5,7 @@ import matplotlib.font_manager as font_manager
 
 
 def app():
-    # Input sidebar
+    # SECTION: CONFIGURATION SIDEBAR
     with st.sidebar:
         st.title("Configure simulation parameters")
 
@@ -64,7 +64,8 @@ def app():
         help="The total number of venture funds to simulate using the selected \
         paramters.")
 
-    # Throw error, warning, and info boxes
+
+    # SECTION: ERRORS, WARNINGS, AND INFO INDICATORS
     prob_dist_sum = input_prob_dist_zero + input_prob_dist_liquidation + input_prob_dist_multiple
     if prob_dist_sum > 100:
         st.error("The probability of return multiple sliders are cumulative greater \
@@ -85,10 +86,8 @@ def app():
         time is very resource intensive and will take a while for Streamlit to process.")
 
 
-    # Content window
+    # SECTION: TITLE
     st.title("Venture Fund Simulator")
-    st.markdown("*Description of the simulator goes here. Built by Wes De \
-    Silvestro. Check out the [launch post](url) for more details.*")
     st.markdown("##")
 
     sim_data = simulate_multiple_funds([input_prob_dist_zero / 100.0,
@@ -106,33 +105,21 @@ def app():
                                                         / 100.0,
                                                         input_fund_lifespan)
 
-    st.subheader("Overview of simulated fund returns")
-    st.markdown("Given `{}` venture funds with a portfolio size of `{}` companies \
-    each, below is a summary of overall returns for each fund after management fees \
-    have been deducted.".format(input_simulation_runs, input_portfolio_size))
-
-    # text_col1, text_col2, text_col3, text_col4, text_col5 = st.columns(5)
-    # text_col1.markdown("##### 25th Percentile")
-    # text_col2.markdown("##### 50th Percentile")
-    # text_col3.markdown("##### 75th Percentile")
-    # text_col4.markdown("##### 90th Percentile")
-    # text_col5.markdown("##### 99th Percentile")
-
-    # raw_stat_col1, raw_stat_col2, raw_stat_col3, raw_stat_col4, raw_stat_col5 = st.columns(5)
-    # raw_stat_col1.metric("Raw return", "{0:.1f}x".format(np.quantile(raw_returns_list, q=0.25)))
-    # raw_stat_col2.metric("Raw return", "{0:.1f}x".format(np.quantile(raw_returns_list, q=0.50)))
-    # raw_stat_col3.metric("Raw return", "{0:.1f}x".format(np.quantile(raw_returns_list, q=0.75)))
-    # raw_stat_col4.metric("Raw return", "{0:.1f}x".format(np.quantile(raw_returns_list, q=0.90)))
-    # raw_stat_col5.metric("Raw return", "{0:.1f}x".format(np.quantile(raw_returns_list, q=0.99)))
+    # Configure necessary fonts for matplotlib
+    ssp_font_regular = font_manager.FontProperties(fname='./Source_Sans_Pro/SourceSansPro-Regular.ttf')
+    ssp_font_bold = font_manager.FontProperties(fname='./Source_Sans_Pro/SourceSansPro-Bold.ttf')
+    ssp_font_semibold = font_manager.FontProperties(fname='./Source_Sans_Pro/SourceSansPro-SemiBold.ttf')
 
 
-    # actual_stat_col1, actual_stat_col2, actual_stat_col3, actual_stat_col4, actual_stat_col5 = st.columns(5)
-    # actual_stat_col1.metric("Post-mgmt fee", "{0:.1f}x".format(np.quantile(actual_returns_list, q=0.25)))
-    # actual_stat_col2.metric("Post-mgmt fee", "{0:.1f}x".format(np.quantile(actual_returns_list, q=0.50)))
-    # actual_stat_col3.metric("Post-mgmt fee", "{0:.1f}x".format(np.quantile(actual_returns_list, q=0.75)))
-    # actual_stat_col4.metric("Post-mgmt fee", "{0:.1f}x".format(np.quantile(actual_returns_list, q=0.90)))
-    # actual_stat_col5.metric("Post-mgmt fee", "{0:.1f}x".format(np.quantile(actual_returns_list, q=0.99)))
+    # SECTION: OVERVIEW OF SIMULATED FUND RETURNS
+    st.subheader("I. Overview of simulated fund returns")
 
+    st.markdown("#### A) Quick overview")
+    st.markdown("Given `{}` venture funds with a portfolio size of `{}` \
+    companies each, below is a breakdown of fund returns after the `{}%` \
+    management fee has been deducted.".format(input_simulation_runs,
+                                              input_portfolio_size,
+                                              input_management_fee_percent))
 
     actual_quantile_25 = np.quantile(actual_returns_list, q=0.25)
     actual_quantile_50 = np.quantile(actual_returns_list, q=0.50)
@@ -147,49 +134,22 @@ def app():
     actual_stat_col4.metric("90th Percentile", "{0:.1f}x".format(actual_quantile_90))
     actual_stat_col5.metric("99th Percentile", "{0:.1f}x".format(actual_quantile_99))
 
-    # Configure necessary fonts
-    ssp_font_regular = font_manager.FontProperties(fname='./Source_Sans_Pro/SourceSansPro-Regular.ttf')
-    ssp_font_bold = font_manager.FontProperties(fname='./Source_Sans_Pro/SourceSansPro-Bold.ttf')
-    ssp_font_semibold = font_manager.FontProperties(fname='./Source_Sans_Pro/SourceSansPro-SemiBold.ttf')
-
-    fig, ax = plt.subplots(figsize=(12, 4))
-    fig.patch.set_facecolor("#000000")
-    fig.patch.set_alpha(0)
-    ax.patch.set_facecolor("#000000")
-    ax.patch.set_alpha(0)
-    ax.hist(x=actual_returns_list, range=(1,100), rwidth=1, color="#14BAA6")
-    ax.tick_params(color='white', labelcolor="white")
-    for spine in ax.spines.values():
+    fig_overview, ax_overview = plt.subplots(figsize=(12, 4))
+    fig_overview.patch.set_facecolor("#000000")
+    fig_overview.patch.set_alpha(0)
+    ax_overview.patch.set_facecolor("#000000")
+    ax_overview.patch.set_alpha(0)
+    ax_overview.hist(x=actual_returns_list, range=(1,100), rwidth=1, color="#14BAA6")
+    ax_overview.tick_params(color='white', labelcolor="white")
+    for spine in ax_overview.spines.values():
             spine.set_edgecolor('white')
     plt.title("Histogram of Fund Return Multiples", color="white",
             fontproperties=ssp_font_bold, fontsize=18)
     plt.xlabel("Return Multiple", color="white", fontproperties=ssp_font_semibold, fontsize=14)
     plt.ylabel("Frequency", color="white", fontproperties=ssp_font_semibold, fontsize=14)
-    plt.setp(ax.get_xticklabels(), fontproperties=ssp_font_regular, fontsize=13)
-    plt.setp(ax.get_yticklabels(), fontproperties=ssp_font_regular, fontsize=13)
-    st.pyplot(fig)
-    st.markdown("###")
-
-
-    st.subheader("Comparison against industry benchmarks")
-    st.markdown("In addition to understanding what the topline return multiples are \
-    for the simulated funds, it's helpful to understand how the funds stack up \
-    against industry benchmarks for what investors expect of the VC asset class. \
-    Most limited partners (LPs) that provide capital to VC funds are looking for a \
-    **3x return**. Anything less than that and the risk-adjusted return would not \
-    justify investing in the venture capital asset class.")
-
-    bm_col1, bm_col2, bm_col3, bm_col4 = st.columns(4)
-    bm_col1.metric("% funds with ≥ 3x return", "{0:.1f}%".format((len([x for x in actual_returns_list if x >= 3])/len(actual_returns_list))*100))
-    bm_col2.metric("% funds with 2-3x return", "{0:.1f}%".format((len([x for x in actual_returns_list if (x < 3) and (x >= 2)])/len(actual_returns_list))*100))
-    bm_col3.metric("% funds with 1-2x return", "{0:.1f}%".format((len([x for x in actual_returns_list if (x < 2) and (x >= 1)])/len(actual_returns_list))*100))
-    bm_col4.metric("% funds with < 1x return", "{0:.1f}%".format((len([x for x in actual_returns_list if x < 1])/len(actual_returns_list))*100))
-
-    st.markdown("We can also look at the compounded annual growth rate (CAGR) to \
-    understand what the year-to-year growth of the simulated funds are. The numbers \
-    below reflect a fund lifespan of `{}` years. Keep in mind that the longer the \
-    fund lifespan, the higher the multiple of return listed above will expected to \
-    be.".format(input_fund_lifespan))
+    plt.setp(ax_overview.get_xticklabels(), fontproperties=ssp_font_regular, fontsize=13)
+    plt.setp(ax_overview.get_yticklabels(), fontproperties=ssp_font_regular, fontsize=13)
+    st.pyplot(fig_overview)
 
     cagr_quantile_25 = 100 * convert_moic_to_cagr(actual_quantile_25, input_fund_lifespan)
     cagr_quantile_50 = 100 * convert_moic_to_cagr(actual_quantile_50, input_fund_lifespan)
@@ -197,76 +157,122 @@ def app():
     cagr_quantile_90 = 100 * convert_moic_to_cagr(actual_quantile_90, input_fund_lifespan)
     cagr_quantile_99 = 100 * convert_moic_to_cagr(actual_quantile_99, input_fund_lifespan)
 
+    st.markdown("#### B) Percentile ranking")
+    st.markdown("Below is a percentile ranking of the funds' compounded annual \
+    growth rates (CAGR) from worst to best.")
     cagr_stat_col1, cagr_stat_col2, cagr_stat_col3, cagr_stat_col4, cagr_stat_col5 = st.columns(5)
     cagr_stat_col1.metric("25th Percentile", "{0:.1f}%".format(cagr_quantile_25))
     cagr_stat_col2.metric("50th Percentile", "{0:.1f}%".format(cagr_quantile_50))
     cagr_stat_col3.metric("75th Percentile", "{0:.1f}%".format(cagr_quantile_75))
     cagr_stat_col4.metric("90th Percentile", "{0:.1f}%".format(cagr_quantile_90))
     cagr_stat_col5.metric("99th Percentile", "{0:.1f}%".format(cagr_quantile_99))
+    st.markdown("###")
 
-    st.markdown("Below are two scatterplots, one showing funding returns with \
-    multiples from 0x to 50x and the second showing fund returns from 51x and \
-    greater. In the first plot, anything above the red line passes the industry \
-    benchmark of achieving at least a 3x return.")
-    fig2, ax2 = plt.subplots(figsize=(12, 6))
-    fig2.patch.set_facecolor("#000000")
-    fig2.patch.set_alpha(0)
-    ax2.patch.set_facecolor("#000000")
-    ax2.patch.set_alpha(0)
-    ax2.scatter(x=np.arange(0,len(actual_returns_list)), y=actual_returns_list,
+
+    # SECTION: COMPARISON AGAINST INDUSTRY BENCHMARKS
+    st.subheader("II. Comparison against industry benchmarks")
+    st.markdown("In addition to understanding what the topline return multiples \
+    are, it can be helpful to undertand how the funds stack up against the \
+    industry benchmarks for what's expected of the VC asset class.")
+
+    st.markdown("#### A) Comparison against the stock market")
+    stock_benchmark = (1.10) ** input_fund_lifespan
+    st.markdown("The simplest approach would be to compare the funds' returns \
+    against investing the money into the stock market for the equivalent period \
+    of time. The stock market returns, on average, about 10% each year. Given a \
+    fund lifespan of `{}` years, the simulated funds will need to return at \
+    least a `{:.1f}x` multiple to match the stock market's average performance.".format(input_fund_lifespan, (1.10) ** input_fund_lifespan))
+    st.markdown("Below are charts of the simulated fund return multiples. To \
+    make viewing the data easier, it is split into two different scatterplots: \
+    the first showing return multiples from 0-50x and the second for 51x and \
+    greater. Note that anything above the red line achieves the desired `{:.1f}x` \
+    benchmark.".format(stock_benchmark))
+    st.markdown("As can be seen in the charts below, `{:.1f}%` of all simulated \
+    funds at least matched the stock market's \
+    performance.".format((len(list(filter(lambda x: x > stock_benchmark,
+                                          actual_returns_list))) /
+                          len(actual_returns_list)) * 100))
+
+    fig_lower_mult, ax_lower_mult = plt.subplots(figsize=(12, 6))
+    fig_lower_mult.patch.set_facecolor("#000000")
+    fig_lower_mult.patch.set_alpha(0)
+    ax_lower_mult.patch.set_facecolor("#000000")
+    ax_lower_mult.patch.set_alpha(0)
+    ax_lower_mult.scatter(x=np.arange(0,len(actual_returns_list)), y=actual_returns_list,
                 color="#14BAA6", s=3)
     plt.ylim(0,50)
-    plt.axhline(y=3, color='#ef4444', linestyle='dashed', linewidth=3)
-    ax2.tick_params(color='white', labelcolor="white")
-    for spine in ax2.spines.values():
+    plt.axhline(y=stock_benchmark, color='#ef4444', linestyle='dashed', linewidth=3)
+    ax_lower_mult.tick_params(color='white', labelcolor="white")
+    for spine in ax_lower_mult.spines.values():
             spine.set_edgecolor('white')
     plt.title("Scatterplot of Fund Return Multiples (0-50x)", color="white",
             fontproperties=ssp_font_bold, fontsize=18)
     plt.xlabel("Fund #", color="white", fontproperties=ssp_font_semibold, fontsize=14)
     plt.ylabel("Multiple", color="white", fontproperties=ssp_font_semibold, fontsize=14)
-    plt.setp(ax2.get_xticklabels(), fontproperties=ssp_font_regular, fontsize=13)
-    plt.setp(ax2.get_yticklabels(), fontproperties=ssp_font_regular, fontsize=13)
-    st.pyplot(fig2)
-    st.write()
+    plt.setp(ax_lower_mult.get_xticklabels(), fontproperties=ssp_font_regular, fontsize=13)
+    plt.setp(ax_lower_mult.get_yticklabels(), fontproperties=ssp_font_regular, fontsize=13)
+    st.pyplot(fig_lower_mult)
 
-    fig3, ax3 = plt.subplots(figsize=(12, 6))
-    fig3.patch.set_facecolor("#000000")
-    fig3.patch.set_alpha(0)
-    ax3.patch.set_facecolor("#000000")
-    ax3.patch.set_alpha(0)
+
+    fig_upper_mult, ax_upper_mult = plt.subplots(figsize=(12, 6))
+    fig_upper_mult.patch.set_facecolor("#000000")
+    fig_upper_mult.patch.set_alpha(0)
+    ax_upper_mult.patch.set_facecolor("#000000")
+    ax_upper_mult.patch.set_alpha(0)
     filtered_list = list(filter(lambda x: x > 50, actual_returns_list))
-    ax3.scatter(x=np.arange(0,len(filtered_list)), y=filtered_list, color="#14BAA6", s=50)
+    ax_upper_mult.scatter(x=np.arange(0,len(filtered_list)), y=filtered_list, color="#14BAA6", s=50)
     plt.ylim(0,np.max(actual_returns_list) + 100)
-    ax3.tick_params(color='white', labelcolor="white")
-    for spine in ax3.spines.values():
+    plt.axhline(y=stock_benchmark, color='#ef4444', linestyle='dashed', linewidth=3)
+    ax_upper_mult.tick_params(color='white', labelcolor="white")
+    for spine in ax_upper_mult.spines.values():
             spine.set_edgecolor('white')
     plt.title("Scatterplot of Fund Return Multiples (>50x)", color="white",
             fontproperties=ssp_font_bold, fontsize=18)
     plt.xlabel("Fund #", color="white", fontproperties=ssp_font_semibold, fontsize=14)
     plt.ylabel("Multiple", color="white", fontproperties=ssp_font_semibold, fontsize=14)
-    plt.setp(ax3.get_xticklabels(), fontproperties=ssp_font_regular, fontsize=13)
-    plt.setp(ax3.get_yticklabels(), fontproperties=ssp_font_regular, fontsize=13)
-    st.pyplot(fig3)
+    plt.setp(ax_upper_mult.get_xticklabels(), fontproperties=ssp_font_regular, fontsize=13)
+    plt.setp(ax_upper_mult.get_yticklabels(), fontproperties=ssp_font_regular, fontsize=13)
+    st.pyplot(fig_upper_mult)
+
+    st.markdown("#### B) Comparison against TBD")
+    st.markdown("Of course, it's not enough to just match the stock market's performance.")
     st.markdown("###")
 
 
     fund_analysis_list = analyze_fund_returns(sim_data, raw_returns_list, input_portfolio_size)
 
-    st.subheader("Where the returns are coming from")
-    st.markdown("We can also investigate where the returns are coming from *within* \
-    each venture fund (i.e., what investments are actually driving overall returns). \
-    We'll split our simulated funds into four buckets: <1x return, 1-2x return, 2-3x \
-    return, and ≥ 3x return.")
-    st.markdown("First, we'll look at the *composition* of each each bucket in terms \
-    of the types of companies within each fund's portfolio. Below is a chart showing \
-    how many failed (<1x), breakeven (1-2x), moderately sucessful (2-3x), and winner \
-    (≥3x) companies make up each bucket.")
+    st.subheader("III. Analysis of the power law")
+    st.markdown("VC returns notoriously follow a [power law \
+    distribution](https://en.wikipedia.org/wiki/Power_law). This means that a \
+    small percentage of companies will drive the vast majority of a portfolio's \
+    returns. Likewise, a small percentage of funds will outperform all the rest.")
+    st.markdown("We can visualize the power law in action by investigating where the \
+    returns are coming from *within* each venture fund (i.e., what investments \
+    are actually driving the overall portfolio returns). To do this, we'll split \
+    our simulated funds into four performance buckets: funds that achieved a <1x \
+    return, 1-2x return, 2-3x return, and ≥3x return. Below is a breakdown of \
+    how many funds fall into each bucket.")
 
-    fig4, ax4 = plt.subplots(figsize=(12, 6))
-    fig4.patch.set_facecolor("#000000")
-    fig4.patch.set_alpha(0)
-    ax4.patch.set_facecolor("#000000")
-    ax4.patch.set_alpha(0)
+    bm_col1, bm_col2, bm_col3, bm_col4 = st.columns(4)
+    bm_col1.metric("% funds with < 1x return", "{0:.1f}%".format((len([x for x in actual_returns_list if x < 1])/len(actual_returns_list))*100))
+    bm_col2.metric("% funds with 1-2x return", "{0:.1f}%".format((len([x for x in actual_returns_list if (x < 2) and (x >= 1)])/len(actual_returns_list))*100))
+    bm_col3.metric("% funds with 2-3x return", "{0:.1f}%".format((len([x for x in actual_returns_list if (x < 3) and (x >= 2)])/len(actual_returns_list))*100))
+    bm_col4.metric("% funds with ≥ 3x return", "{0:.1f}%".format((len([x for x in actual_returns_list if x >= 3])/len(actual_returns_list))*100))
+
+    st.markdown("#### A) Composition of fund returns")
+    st.markdown("Next, we'll look at the composition of each performance bucket \
+    in terms of the types of companies that make up each bucket. We'll \
+    categorize companies in the same way we categorized funds: by return. \
+    There will be four types of companies in our analysis: failed (<1x return), \
+    breakeven (1-2x return), moderately successful (2-3x), and winner (≥3x \
+    return) companies. Below is a chart showing the composition of each \
+    bucket in terms of the relative proportions of companies within funds in that bucket.")
+
+    fig_comp, ax_comp = plt.subplots(figsize=(12, 6))
+    fig_comp.patch.set_facecolor("#000000")
+    fig_comp.patch.set_alpha(0)
+    ax_comp.patch.set_facecolor("#000000")
+    ax_comp.patch.set_alpha(0)
     labels = ['Failed Fund', 'Breakeven Fund', 'Moderately Successful Fund', 'Winner Fund']
 
     pct_comp_less_1x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_comp_less_1x')
@@ -274,71 +280,82 @@ def app():
     pct_comp_2x_3x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_comp_2x_3x')
     pct_comp_greateq_3x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_comp_greateq_3x')
 
-    ax4.bar(labels, pct_comp_less_1x, label='Companies returning < 1x', color="#ef4444")
-    ax4.bar(labels, pct_comp_1x_2x, label='Companies returning 1-2x',
+    ax_comp.bar(labels, pct_comp_less_1x, label='Companies returning < 1x', color="#ef4444")
+    ax_comp.bar(labels, pct_comp_1x_2x, label='Companies returning 1-2x',
             bottom=pct_comp_less_1x, color="#eab308")
-    ax4.bar(labels, pct_comp_2x_3x, label='Companies returning 2-3x',
+    ax_comp.bar(labels, pct_comp_2x_3x, label='Companies returning 2-3x',
             bottom=pct_comp_less_1x+pct_comp_1x_2x, color="#3b82f6")
-    ax4.bar(labels, pct_comp_greateq_3x, label='Companies returning ≥3x',
+    ax_comp.bar(labels, pct_comp_greateq_3x, label='Companies returning ≥3x',
             bottom=pct_comp_less_1x+pct_comp_1x_2x+pct_comp_2x_3x, color="#22c55e")
-    ax4.tick_params(color='white', labelcolor="white")
+    ax_comp.tick_params(color='white', labelcolor="white")
     plt.ylim(0,105,1)
-    for spine in ax4.spines.values():
+    for spine in ax_comp.spines.values():
             spine.set_edgecolor('white')
     plt.title("Breakdown of Fund Composition", color="white",
             fontproperties=ssp_font_bold, fontsize=18)
     plt.xlabel("Bucket of Fund", color="white", fontproperties=ssp_font_semibold, fontsize=14)
     plt.ylabel("% of Fund Composition", color="white", fontproperties=ssp_font_semibold, fontsize=14)
-    ax4.legend(loc='upper center', bbox_to_anchor=(0.5, -0.12), ncol=5,
+    ax_comp.legend(loc='upper center', bbox_to_anchor=(0.5, -0.12), ncol=5,
             frameon=False)
-    plt.setp(ax4.get_legend().get_texts(), color='white', fontproperties=ssp_font_regular,
+    plt.setp(ax_comp.get_legend().get_texts(), color='white', fontproperties=ssp_font_regular,
             fontsize=12)
-    plt.setp(ax4.get_xticklabels(), fontproperties=ssp_font_regular, fontsize=13)
-    plt.setp(ax4.get_yticklabels(), fontproperties=ssp_font_regular, fontsize=13)
-    st.pyplot(fig4)
+    plt.setp(ax_comp.get_xticklabels(), fontproperties=ssp_font_regular, fontsize=13)
+    plt.setp(ax_comp.get_yticklabels(), fontproperties=ssp_font_regular, fontsize=13)
+    st.pyplot(fig_comp)
+
+    st.markdown("#### B) Source of fund returns")
+    st.markdown("Finally, we can look at the source of returns for each bucket. \
+    Below is a chart showing the percentage of overall fund returns that are \
+    attributable to each type of company within a given portfolio.")
+
 
     st.markdown("Next, we'll compare the *source of returns* for each bucket in \
     terms of what companies are driving overall fund performance. Below is a chart \
     showing the percentage of overall fund returns that are attributable to each \
-    type of company within a particular bucket of funds.")
+    type of company within that fund, averaged for all funds in a given performance bucket.")
 
 
-    fig5, ax5 = plt.subplots(figsize=(12, 6))
-    fig5.patch.set_facecolor("#000000")
-    fig5.patch.set_alpha(0)
-    ax5.patch.set_facecolor("#000000")
-    ax5.patch.set_alpha(0)
+    fig_return, ax_return = plt.subplots(figsize=(12, 6))
+    fig_return.patch.set_facecolor("#000000")
+    fig_return.patch.set_alpha(0)
+    ax_return.patch.set_facecolor("#000000")
+    ax_return.patch.set_alpha(0)
 
     pct_return_less_1x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_return_less_1x')
     pct_return_1x_2x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_return_1x_2x')
     pct_return_2x_3x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_return_2x_3x')
     pct_return_greateq_3x = 100 * get_averages_for_variable_across_buckets(fund_analysis_list, 'pct_return_greateq_3x')
 
-    ax5.bar(labels, pct_return_less_1x, label='Companies returning < 1x', color="#ef4444")
-    ax5.bar(labels, pct_return_1x_2x, label='Companies returning 1-2x',
+    ax_return.bar(labels, pct_return_less_1x, label='Companies returning < 1x', color="#ef4444")
+    ax_return.bar(labels, pct_return_1x_2x, label='Companies returning 1-2x',
             bottom=pct_return_less_1x, color="#eab308")
-    ax5.bar(labels, pct_return_2x_3x, label='Companies returning 2-3x',
+    ax_return.bar(labels, pct_return_2x_3x, label='Companies returning 2-3x',
             bottom=pct_return_less_1x+pct_return_1x_2x, color="#3b82f6")
-    ax5.bar(labels, pct_return_greateq_3x, label='Companies returning ≥3x',
+    ax_return.bar(labels, pct_return_greateq_3x, label='Companies returning ≥3x',
             bottom=pct_return_less_1x+pct_return_1x_2x+pct_return_2x_3x, color="#22c55e")
-    ax5.tick_params(color='white', labelcolor="white")
+    ax_return.tick_params(color='white', labelcolor="white")
     plt.ylim(0,105,1)
-    for spine in ax5.spines.values():
+    for spine in ax_return.spines.values():
             spine.set_edgecolor('white')
     plt.title("Breakdown of Fund Returns", color="white",
             fontproperties=ssp_font_bold, fontsize=18)
     plt.xlabel("Bucket of Fund", color="white", fontproperties=ssp_font_semibold, fontsize=14)
     plt.ylabel("% of Fund Returns", color="white", fontproperties=ssp_font_semibold, fontsize=14)
-    ax5.legend(loc='upper center', bbox_to_anchor=(0.5, -0.12), ncol=5,
+    ax_return.legend(loc='upper center', bbox_to_anchor=(0.5, -0.12), ncol=5,
             frameon=False)
-    plt.setp(ax5.get_legend().get_texts(), color='white', fontproperties=ssp_font_regular,
+    plt.setp(ax_return.get_legend().get_texts(), color='white', fontproperties=ssp_font_regular,
             fontsize=12)
-    plt.setp(ax5.get_xticklabels(), fontproperties=ssp_font_regular, fontsize=13)
-    plt.setp(ax5.get_yticklabels(), fontproperties=ssp_font_regular, fontsize=13)
-    st.pyplot(fig5)
-    st.markdown("As you can see in the first chart, the composition of the \
-    funds is relatively similar across each bucket. However, there is a dramatic \
-    difference in terms of the breakdown of returns as seen in the second chart. The \
-    vast majority of the returns for funds that at least breakeven comes from \
-    'winning' companies that at least triple in value from initial investment to \
-    exit. Nearly all the returns come from a small set of outlier investments.")
+    plt.setp(ax_return.get_xticklabels(), fontproperties=ssp_font_regular, fontsize=13)
+    plt.setp(ax_return.get_yticklabels(), fontproperties=ssp_font_regular, fontsize=13)
+    st.pyplot(fig_return)
+
+    st.markdown("As you can see in the above two charts, the composition of the \
+    funds is relatively similar across each bucket with minor variation. \
+    However, there is a dramatic difference in terms of the source of returns \
+    for each bucket. For breakeven, moderately successful, and winner funds, the \
+    vast majority of the returns are coming from 'winner' companies. Failed \
+    funds have a more diverse source of returns precisely because they have a \
+    smaller (but not by much) percentage of 'winner' companies within their portfolios.")
+    st.markdown("This is the power law in action. A few 'winner' companies drive \
+    almost all of the overall returns for a portfolio, and without those \
+    companies, your fund is bust.")
