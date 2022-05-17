@@ -179,7 +179,7 @@ def app():
     against investing the money into the stock market for the equivalent period \
     of time. The stock market has median returns of about 10% each year. Given a \
     fund lifespan of `{}` years, the simulated funds will need to return at \
-    least a `{:.1f}x` multiple to match the stock market's average performance.".format(input_fund_lifespan, (1.10) ** input_fund_lifespan))
+    least a `{:.1f}x` multiple to match the stock market's median performance.".format(input_fund_lifespan, (1.10) ** input_fund_lifespan))
     st.markdown("Below are charts of the simulated fund return multiples. To \
     make viewing the data easier, it is split into two different scatterplots: \
     the first showing return multiples from 0-50x and the second for 51x and \
@@ -362,3 +362,24 @@ def app():
     st.markdown("This is the power law in action. A few 'winner' companies drive \
     almost all of the overall returns for a portfolio, and without those \
     companies, your fund is bust.")
+
+
+    # SECTION: CREDITS
+    st.subheader("IV. Credits")
+    st.markdown("The VC Simulator is heavily based off a [proposed \
+    model](https://reactionwheel.net/2015/06/power-laws-in-venture.html) by \
+    Professor Jerry Neumann of [Columbia \
+    University](https://entrepreneurship.columbia.edu/pride/jerry-neumann/) and \
+    [Neu Venture Capital](https://neuvc.com/). Special thanks to his assistance \
+    with this project and the relevant academic scholarship in the area.")
+
+    # st.markdown("Additional thanks to the following individuals for providing \
+    # feedback on this model and its applications: ")
+    # st.write(
+    #     """
+    #     - List
+    #     """)
+
+    st.markdown("And of course, thanks to [Streamlit](https://streamlit.io/) for \
+    providing a fantastic interactive app library for Python. This project would \
+    not be possible without it!")
