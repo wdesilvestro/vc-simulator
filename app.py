@@ -1,6 +1,6 @@
 import streamlit as st
 from multipage import MultiPage
-from pages import simulator
+from pages import simulator, growth_rates
 
 # Configure Streamlit page
 st.set_page_config(
@@ -20,6 +20,7 @@ app = MultiPage()
 
 # Add all your applications (pages) here
 app.add_page("Simulator", simulator.app)
+app.add_page("Growth Rates Calculator", growth_rates.app)
 
 # The main app
 app.run()
