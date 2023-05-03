@@ -2,6 +2,8 @@
 
 [![VC Simulator Screenshot][screenshot]]([streamlit-link])
 
+## NOTE
+This project is no longer maintained. I did not fully implement the [statistical model](https://reactionwheel.net/2017/12/power-laws-in-venture-portfolio-construction.html) suggested by Jerry Neumann, so please review the code in `library.py` to determine if the assumptions made are still of use to you.
 
 ## About the project
 **Author:** Wes De Silvestro (check out my [blog](https://statespace.blog))
