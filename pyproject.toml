@@ -5,7 +5,7 @@ description = ""
 authors = ["Wes De Silvestro"]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 powerlaw = "^1.5"
 numpy = "^1.22.3"
 streamlit = "^1.9.0"
